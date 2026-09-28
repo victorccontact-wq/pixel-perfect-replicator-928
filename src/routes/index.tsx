@@ -38,7 +38,10 @@ function Index() {
   return (
     <main className="min-h-screen bg-background px-5 pb-32 pt-10">
       <header className="border-b border-border pb-5">
-        <h1 className="text-4xl font-bold tracking-[0.35em]">MYO</h1>
+        <p className="label-tech">[ MYO ]</p>
+        <h1 className="mt-1 text-3xl font-bold uppercase tracking-[0.25em]">
+          Lancer une séance
+        </h1>
       </header>
 
       <section className="mt-8 space-y-3">
