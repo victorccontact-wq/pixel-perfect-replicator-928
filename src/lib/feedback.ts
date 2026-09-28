@@ -1,7 +1,9 @@
+import { loadSettings } from "./settings";
 let ctx: AudioContext | null = null;
 
 function getCtx(): AudioContext | null {
   if (typeof window === "undefined") return null;
+  if (!loadSettings().sound) return null;
   const AC =
     window.AudioContext ??
     (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
@@ -46,7 +48,7 @@ export function tick() {
 }
 
 export function haptic(pattern: number | number[]) {
-  if (typeof navigator !== "undefined" && "vibrate" in navigator) {
+  if (typeof navigator !== "undefined" && "vibrate" in navigator && loadSettings().haptics) {
     navigator.vibrate(pattern);
   }
 }

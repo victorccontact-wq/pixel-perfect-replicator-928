@@ -1,24 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-
-const SETTINGS_KEY = "myo_settings";
-
-type Settings = {
-  sound: boolean;
-  haptics: boolean;
-  autoRestDelay: number;
-};
-
-const DEFAULTS: Settings = { sound: true, haptics: true, autoRestDelay: 5 };
-
-export function loadSettings(): Settings {
-  try {
-    const raw = localStorage.getItem(SETTINGS_KEY);
-    return raw ? { ...DEFAULTS, ...JSON.parse(raw) } : DEFAULTS;
-  } catch {
-    return DEFAULTS;
-  }
-}
+import { DEFAULTS, loadSettings, saveSettings, type Settings } from "@/lib/settings";
 
 export const Route = createFileRoute("/settings")({
   head: () => ({
@@ -42,7 +24,7 @@ function SettingsPage() {
   const update = (patch: Partial<Settings>) => {
     const next = { ...s, ...patch };
     setS(next);
-    localStorage.setItem(SETTINGS_KEY, JSON.stringify(next));
+    saveSettings(next);
   };
 
   return (

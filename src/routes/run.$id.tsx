@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getWorkout, upsertWorkout, type Workout } from "@/lib/storage";
+import { loadSettings } from "@/lib/settings";
 import { bassImpact, haptic, primeAudio, tick } from "@/lib/feedback";
 
 export const Route = createFileRoute("/run/$id")({
@@ -24,7 +25,6 @@ export const Route = createFileRoute("/run/$id")({
 
 type Phase = "work" | "arming" | "rest" | "done";
 
-const ARM_DELAY = 5;
 
 function fmt(s: number) {
   const m = Math.floor(Math.max(s, 0) / 60);
@@ -39,12 +39,14 @@ function Run() {
   const [exIndex, setExIndex] = useState(0);
   const [setIndex, setSetIndex] = useState(0);
   const [phase, setPhase] = useState<Phase>("work");
-  const [arm, setArm] = useState(ARM_DELAY);
+  const [armDelay, setArmDelay] = useState(5);
+  const [arm, setArm] = useState(5);
   const [rest, setRest] = useState(0);
   const lastTick = useRef(0);
 
   useEffect(() => {
     setWorkout(getWorkout(id) ?? null);
+    setArmDelay(loadSettings().autoRestDelay);
   }, [id]);
 
   const exercise = workout?.exercises[exIndex];
@@ -52,52 +54,50 @@ function Run() {
   // Inactivity detection: any touch while arming resets the 5s delay.
   useEffect(() => {
     if (phase !== "arming") return;
-    const reset = () => setArm(ARM_DELAY);
+    const reset = () => setArm(armDelay);
     window.addEventListener("pointerdown", reset);
     window.addEventListener("keydown", reset);
     return () => {
       window.removeEventListener("pointerdown", reset);
       window.removeEventListener("keydown", reset);
     };
-  }, [phase]);
+  }, [phase, armDelay]);
 
+  // Countdown tick (pure updater, no side effects inside).
   useEffect(() => {
     if (phase !== "arming") return;
-    const t = window.setInterval(() => {
-      setArm((a) => {
-        if (a <= 1) {
-          setPhase("rest");
-          setRest(exercise?.rest ?? 90);
-          haptic(30);
-          return ARM_DELAY;
-        }
-        return a - 1;
-      });
-    }, 1000);
+    const t = window.setInterval(() => setArm((a) => a - 1), 1000);
     return () => window.clearInterval(t);
-  }, [phase, exercise]);
+  }, [phase]);
+
+  // Transition to rest when countdown reaches 0.
+  useEffect(() => {
+    if (phase === "arming" && arm <= 0) {
+      setPhase("rest");
+      setRest(exercise?.rest ?? 90);
+      haptic(30);
+    }
+  }, [phase, arm, exercise]);
 
   useEffect(() => {
     if (phase !== "rest") return;
-    const t = window.setInterval(() => {
-      setRest((r) => {
-        const next = r - 1;
-        if (next <= 0) {
-          bassImpact();
-          haptic([200, 100, 400]);
-          setPhase("work");
-          return 0;
-        }
-        if (next <= 3 && next !== lastTick.current) {
-          lastTick.current = next;
-          tick();
-          haptic(20);
-        }
-        return next;
-      });
-    }, 1000);
+    const t = window.setInterval(() => setRest((r) => r - 1), 1000);
     return () => window.clearInterval(t);
   }, [phase]);
+
+  useEffect(() => {
+    if (phase !== "rest") return;
+    if (rest <= 0) {
+      bassImpact();
+      haptic([200, 100, 400]);
+      lastTick.current = 0;
+      setPhase("work");
+    } else if (rest <= 3 && rest !== lastTick.current) {
+      lastTick.current = rest;
+      tick();
+      haptic(20);
+    }
+  }, [phase, rest]);
 
   const validateSet = useCallback(() => {
     if (!workout || !exercise) return;
@@ -118,9 +118,9 @@ function Run() {
     } else {
       setSetIndex(setIndex + 1);
     }
-    setArm(ARM_DELAY);
+    setArm(armDelay);
     setPhase("arming");
-  }, [workout, exercise, setIndex, exIndex]);
+  }, [workout, exercise, setIndex, exIndex, armDelay]);
 
   const changeLoad = (delta: number) => {
     if (!workout || !exercise) return;
@@ -140,6 +140,17 @@ function Run() {
         <p className="label-tech">[ SÉANCE_INTROUVABLE ]</p>
         <button onClick={() => void navigate({ to: "/" })} className="tag">
           RETOUR
+        </button>
+      </main>
+    );
+  }
+
+  if (workout.exercises.length === 0) {
+    return (
+      <main className="flex min-h-screen flex-col items-center justify-center gap-4 px-6 text-center">
+        <p className="label-tech">[ AUCUN_EXERCICE ]</p>
+        <button onClick={() => void navigate({ to: "/workout/$id", params: { id } })} className="tag">
+          CONFIGURER
         </button>
       </main>
     );
