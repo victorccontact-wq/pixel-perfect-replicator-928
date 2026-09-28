@@ -21,16 +21,9 @@ export function GlassNav() {
         to="/workout/$id"
         params={{ id: "new" }}
         aria-label="Nouvelle séance"
-        className="mx-1.5 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-2xl font-bold text-primary-foreground"
+        className="ml-1.5 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-2xl font-bold text-primary-foreground"
       >
         +
-      </Link>
-      <Link
-        to="/workout/$id"
-        params={{ id: "new" }}
-        className="flex-1 rounded-full py-3 text-center text-[11px] uppercase tracking-[0.25em] text-muted-foreground transition-colors hover:text-foreground"
-      >
-        Créer
       </Link>
     </nav>
   );
