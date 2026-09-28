@@ -48,7 +48,7 @@ export function tick() {
 }
 
 export function haptic(pattern: number | number[]) {
-  if (typeof navigator !== "undefined" && "vibrate" in navigator) {
+  if (typeof navigator !== "undefined" && "vibrate" in navigator && loadSettings().haptics) {
     navigator.vibrate(pattern);
   }
 }
