@@ -40,9 +40,9 @@ function Index() {
       <header className="flex items-end justify-between border-b border-border pb-5">
         <div>
           <h1 className="text-4xl font-bold tracking-[0.35em]">MYO</h1>
-          <p className="label-tech mt-2">[ LOCAL_FIRST / V1.0 ]</p>
+          <p className="label-tech mt-2">]</p>
         </div>
-        <span className="tag">{workouts.length} SÉANCES</span>
+        <span className="tag">{"\n"}</span>
       </header>
 
       <section className="mt-8 space-y-3">
