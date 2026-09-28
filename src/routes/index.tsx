@@ -1,39 +1,30 @@
-import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { deleteWorkout, loadWorkouts, type Workout } from "@/lib/storage";
+import { loadWorkouts, type Workout } from "@/lib/storage";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "MYO — Séances" },
-      {
-        name: "description",
-        content:
-          "MYO : créateur de séances de musculation et minuteur de repos automatique, 100% local.",
-      },
-      { property: "og:title", content: "MYO — Séances" },
-      {
-        property: "og:description",
-        content: "Créez vos séances, exécutez-les, le repos se lance seul.",
-      },
+      { title: "MYO — Lancer une séance" },
+      { name: "description", content: "Lancez vos séances de musculation." },
+      { property: "og:title", content: "MYO — Lancer une séance" },
+      { property: "og:description", content: "Lancez vos séances de musculation." },
     ],
   }),
-  component: Index,
+  component: HomePage,
 });
 
-function Index() {
+function HomePage() {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
-  const router = useRouter();
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     setWorkouts(loadWorkouts());
   }, []);
 
-  const remove = (id: string) => {
-    deleteWorkout(id);
-    setWorkouts(loadWorkouts());
-    router.invalidate();
-  };
+  const filtered = workouts.filter((w) =>
+    w.name.toLowerCase().includes(query.trim().toLowerCase())
+  );
 
   return (
     <main className="min-h-screen bg-background px-5 pb-32 pt-10">
@@ -44,55 +35,41 @@ function Index() {
         </h1>
       </header>
 
-      <section className="mt-8 space-y-3">
-        {workouts.length === 0 && (
-          <div className="panel p-8 text-center">
-            <p className="label-tech">[ AUCUNE_SÉANCE ]</p>
-            <p className="mt-3 text-sm text-muted-foreground">
-              Créez votre première séance avant d'entrer dans la salle.
-            </p>
-          </div>
-        )}
+      <div className="mt-6">
+        <input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="RECHERCHER…"
+          className="field w-full px-4 py-3 text-sm uppercase tracking-widest placeholder:text-muted-foreground"
+        />
+      </div>
 
-        {workouts.map((w, i) => (
-          <article key={w.id} className="panel">
-            <div className="flex items-start justify-between border-b border-border px-4 py-3">
-              <div>
-                <p className="label-tech">
-                  [ PRG_{String(i + 1).padStart(2, "0")} ]
-                </p>
-                <h2 className="mt-1 text-lg font-medium uppercase tracking-wider">
-                  {w.name || "SANS_NOM"}
-                </h2>
-              </div>
-              <span className="tag">{w.exercises.length} EX</span>
+      <section className="mt-6 space-y-3">
+        {filtered.length === 0 && (
+          <p className="py-10 text-center text-xs uppercase tracking-widest text-muted-foreground">
+            {workouts.length === 0
+              ? "Aucune séance — configurez-en une"
+              : "Aucun résultat"}
+          </p>
+        )}
+        {filtered.map((w) => (
+          <article key={w.id} className="panel px-4 py-4">
+            <div className="flex items-baseline justify-between gap-3">
+              <h2 className="text-lg font-bold uppercase tracking-wider">
+                {w.name}
+              </h2>
+              <span className="tag">{w.exercises.length} EXO</span>
             </div>
-            <div className="grid grid-cols-3">
-              <Link
-                to="/run/$id"
-                params={{ id: w.id }}
-                className="border-r border-border bg-primary py-3 text-center text-xs font-bold uppercase tracking-[0.2em] text-primary-foreground"
-              >
-                Lancer
-              </Link>
-              <Link
-                to="/workout/$id"
-                params={{ id: w.id }}
-                className="border-r border-border py-3 text-center text-xs uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:text-foreground"
-              >
-                Éditer
-              </Link>
-              <button
-                onClick={() => remove(w.id)}
-                className="py-3 text-center text-xs uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:text-foreground"
-              >
-                Suppr
-              </button>
-            </div>
+            <Link
+              to="/run/$id"
+              params={{ id: w.id }}
+              className="mt-4 block bg-primary py-2.5 text-center text-xs font-bold uppercase tracking-widest text-primary-foreground"
+            >
+              Lancer
+            </Link>
           </article>
         ))}
       </section>
-
     </main>
   );
 }

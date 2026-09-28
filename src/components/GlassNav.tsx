@@ -10,8 +10,7 @@ export function GlassNav() {
       className="glass fixed inset-x-4 bottom-5 z-50 mx-auto flex max-w-md items-center justify-between rounded-full p-1.5"
     >
       <Link
-        to="/workout/$id"
-        params={{ id: "new" }}
+        to="/configure"
         className="flex-1 rounded-full py-3 text-center text-[10px] uppercase tracking-[0.2em] text-muted-foreground transition-colors"
         activeProps={{ className: "glass-active text-foreground" }}
       >

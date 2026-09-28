@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ConfigureRouteImport } from './routes/configure'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as RunIdRouteImport } from './routes/run.$id'
 import { Route as WorkoutIdRouteImport } from './routes/workout.$id'
@@ -17,6 +18,11 @@ import { Route as WorkoutIdRouteImport } from './routes/workout.$id'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfigureRoute = ConfigureRouteImport.update({
+  id: '/configure',
+  path: '/configure',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsRoute = SettingsRouteImport.update({
@@ -37,12 +43,14 @@ const WorkoutIdRoute = WorkoutIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/configure': typeof ConfigureRoute
   '/settings': typeof SettingsRoute
   '/run/$id': typeof RunIdRoute
   '/workout/$id': typeof WorkoutIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/configure': typeof ConfigureRoute
   '/settings': typeof SettingsRoute
   '/run/$id': typeof RunIdRoute
   '/workout/$id': typeof WorkoutIdRoute
@@ -50,20 +58,23 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/configure': typeof ConfigureRoute
   '/settings': typeof SettingsRoute
   '/run/$id': typeof RunIdRoute
   '/workout/$id': typeof WorkoutIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/settings' | '/run/$id' | '/workout/$id'
+  fullPaths: '/' | '/configure' | '/settings' | '/run/$id' | '/workout/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/settings' | '/run/$id' | '/workout/$id'
-  id: '__root__' | '/' | '/settings' | '/run/$id' | '/workout/$id'
+  to: '/' | '/configure' | '/settings' | '/run/$id' | '/workout/$id'
+  id:
+    '__root__' | '/' | '/configure' | '/settings' | '/run/$id' | '/workout/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ConfigureRoute: typeof ConfigureRoute
   SettingsRoute: typeof SettingsRoute
   RunIdRoute: typeof RunIdRoute
   WorkoutIdRoute: typeof WorkoutIdRoute
@@ -76,6 +87,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/configure': {
+      id: '/configure'
+      path: '/configure'
+      fullPath: '/configure'
+      preLoaderRoute: typeof ConfigureRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/settings': {
@@ -104,6 +122,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ConfigureRoute: ConfigureRoute,
   SettingsRoute: SettingsRoute,
   RunIdRoute: RunIdRoute,
   WorkoutIdRoute: WorkoutIdRoute,
