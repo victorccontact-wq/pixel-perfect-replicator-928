@@ -36,7 +36,7 @@ function Index() {
   };
 
   return (
-    <main className="min-h-screen bg-background px-5 pb-24 pt-10">
+    <main className="min-h-screen bg-background px-5 pb-32 pt-10">
       <header className="border-b border-border pb-5">
         <h1 className="text-4xl font-bold tracking-[0.35em]">MYO</h1>
       </header>
@@ -90,13 +90,6 @@ function Index() {
         ))}
       </section>
 
-      <Link
-        to="/workout/$id"
-        params={{ id: "new" }}
-        className="fixed inset-x-5 bottom-6 mx-auto block max-w-md border border-foreground bg-background py-4 text-center text-sm font-bold uppercase tracking-[0.3em] text-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
-      >
-        [ NOUVELLE_SÉANCE ]
-      </Link>
     </main>
   );
 }
