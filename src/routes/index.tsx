@@ -37,12 +37,8 @@ function Index() {
 
   return (
     <main className="min-h-screen bg-background px-5 pb-24 pt-10">
-      <header className="flex items-end justify-between border-b border-border pb-5">
-        <div>
-          <h1 className="text-4xl font-bold tracking-[0.35em]">MYO</h1>
-          <p className="label-tech mt-2">]</p>
-        </div>
-        <span className="tag">{"\n"}</span>
+      <header className="border-b border-border pb-5">
+        <h1 className="text-4xl font-bold tracking-[0.35em]">MYO</h1>
       </header>
 
       <section className="mt-8 space-y-3">
