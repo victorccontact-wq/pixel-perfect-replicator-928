@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { getWorkout, type Workout } from "@/lib/storage";
+import { getWorkout, upsertWorkout, type Workout } from "@/lib/storage";
 import { bassImpact, haptic, primeAudio, tick } from "@/lib/feedback";
 
 export const Route = createFileRoute("/run/$id")({
@@ -122,6 +122,18 @@ function Run() {
     setPhase("arming");
   }, [workout, exercise, setIndex, exIndex]);
 
+  const changeLoad = (delta: number) => {
+    if (!workout || !exercise) return;
+    const load = Math.max(0, Math.round((exercise.load + delta) * 10) / 10);
+    const next = {
+      ...workout,
+      exercises: workout.exercises.map((e, i) => (i === exIndex ? { ...e, load } : e)),
+    };
+    setWorkout(next);
+    upsertWorkout(next);
+    haptic(15);
+  };
+
   if (!workout) {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center gap-4">
@@ -172,9 +184,27 @@ function Run() {
         <h1 className="mt-2 text-3xl font-bold uppercase leading-tight tracking-[0.15em]">
           {exercise?.name}
         </h1>
-        <p className="mt-3 text-sm text-muted-foreground">
-          CHARGE {exercise?.load} KG · REPOS {exercise?.rest}s
-        </p>
+        <p className="mt-3 text-sm text-muted-foreground">REPOS {exercise?.rest}s</p>
+        <div className="mt-4 flex items-stretch border border-border">
+          <button
+            onClick={() => changeLoad(-2.5)}
+            aria-label="Diminuer la charge"
+            className="w-16 border-r border-border text-2xl font-bold hover:bg-secondary"
+          >
+            −
+          </button>
+          <div className="flex flex-1 flex-col items-center py-3">
+            <span className="label-tech">[ CHARGE_KG ]</span>
+            <span className="mt-1 text-3xl font-bold">{exercise?.load}</span>
+          </div>
+          <button
+            onClick={() => changeLoad(2.5)}
+            aria-label="Augmenter la charge"
+            className="w-16 border-l border-border text-2xl font-bold hover:bg-secondary"
+          >
+            +
+          </button>
+        </div>
       </div>
 
       <div className="mt-10 flex flex-1 flex-col items-center justify-center border border-border">

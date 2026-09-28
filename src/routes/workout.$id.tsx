@@ -189,7 +189,8 @@ function NumField({
       <span className="label-tech">{label}</span>
       <input
         type="number"
-        inputMode="numeric"
+        inputMode="decimal"
+        step="any"
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
         className="field mt-1 text-center focus:border-foreground"
