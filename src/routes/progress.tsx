@@ -45,6 +45,16 @@ function ProgressPage() {
 
   const activeKey = exercises.some(([key]) => key === selected) ? selected : exercises[0]?.[0];
   const active = exercises.find(([key]) => key === activeKey)?.[1];
+  const trendPoints = active?.points.map((point, index) => {
+    const loads = active.points.map((p) => p.load);
+    const low = Math.min(...loads);
+    const high = Math.max(...loads);
+    return {
+      x: active.points.length === 1 ? 160 : 16 + index * 288 / (active.points.length - 1),
+      y: high === low ? 56 : 96 - (point.load - low) / (high - low) * 80,
+      ...point,
+    };
+  }) ?? [];
   const totalSets = sessions.reduce((sum, session) => sum + session.sets.length, 0);
   const volume = sessions.reduce((sum, session) => sum + session.sets.reduce((subtotal, set) => subtotal + set.load, 0), 0);
 
@@ -83,12 +93,13 @@ function ProgressPage() {
                   <div><p className="label-tech">[ DERNIÈRE CHARGE ]</p><p className="mt-1 text-2xl font-bold">{number.format(active.points.at(-1)?.load ?? 0)} <span className="text-sm text-muted-foreground">KG</span></p></div>
                   <p className="text-xs text-muted-foreground">{active.points.length} SÉRIE{active.points.length > 1 ? "S" : ""}</p>
                 </div>
-                <div aria-label={`Évolution de ${active.name}`} className="mt-6 flex h-32 items-end gap-1 overflow-x-auto border-b border-border pb-1">
-                  {active.points.map((point, index) => (
-                    <div key={`${point.at}-${index}`} title={`${date.format(point.at)} · ${number.format(point.load)} kg`} className="flex h-full min-w-3 flex-1 flex-col justify-end">
-                      <div className="min-h-1 w-full bg-primary" style={{ height: `${Math.max(3, point.load / Math.max(active.record, 1) * 100)}%` }} />
-                    </div>
-                  ))}
+                <div aria-label={`Évolution de ${active.name}`} className="mt-6 border-b border-border">
+                  <svg viewBox="0 0 320 112" className="h-32 w-full text-foreground" role="img" aria-label={`${active.points.length} charges enregistrées, de ${number.format(active.points[0]?.load ?? 0)} à ${number.format(active.points.at(-1)?.load ?? 0)} kg`}>
+                    <path d={`M ${trendPoints.map((p) => `${p.x} ${p.y}`).join(" L ")}`} fill="none" stroke="currentColor" strokeWidth="2" />
+                    {trendPoints.map((point, index) => (
+                      <circle key={`${point.at}-${index}`} cx={point.x} cy={point.y} r="3.5" fill="currentColor" />
+                    ))}
+                  </svg>
                 </div>
                 <div className="mt-2 flex justify-between text-[10px] text-muted-foreground">
                   <span>{date.format(active.points[0]?.at ?? 0)}</span>
