@@ -1,4 +1,12 @@
 import { Link, useRouterState } from "@tanstack/react-router";
+import { ChartNoAxesCombined, Play, Settings2, SlidersHorizontal } from "lucide-react";
+
+const items = [
+  { to: "/configure", label: "Configurer", Icon: SlidersHorizontal },
+  { to: "/progress", label: "Progression", Icon: ChartNoAxesCombined },
+  { to: "/", label: "Lancer", Icon: Play },
+  { to: "/settings", label: "Paramètres", Icon: Settings2 },
+] as const;
 
 export function GlassNav() {
   const path = useRouterState({ select: (s) => s.location.pathname });
@@ -7,38 +15,21 @@ export function GlassNav() {
   return (
     <nav
       aria-label="Navigation principale"
-      className="glass fixed inset-x-4 bottom-5 z-50 mx-auto flex max-w-md items-center justify-between rounded-full p-1.5"
+      className="glass fixed inset-x-3 bottom-[max(1rem,env(safe-area-inset-bottom))] z-50 mx-auto grid max-w-md grid-cols-4 items-stretch rounded-full p-1.5"
     >
-      <Link
-        to="/configure"
-        className="flex-1 rounded-full py-3 text-center text-[10px] uppercase tracking-[0.2em] text-muted-foreground transition-colors"
-        activeProps={{ className: "glass-active text-foreground" }}
-      >
-        Configurer
-      </Link>
-      <Link
-        to="/"
-        aria-label="Lancer une séance"
-        activeOptions={{ exact: true }}
-        className="mx-1.5 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground"
-      >
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          aria-hidden="true"
+      {items.map(({ to, label, Icon }) => (
+        <Link
+          key={to}
+          to={to}
+          aria-label={label === "Lancer" ? "Lancer une séance" : label}
+          activeOptions={{ exact: true }}
+          className="flex min-w-0 flex-col items-center justify-center gap-1 rounded-full px-0.5 py-2 text-muted-foreground transition-colors"
+          activeProps={{ className: "glass-active text-foreground" }}
         >
-          <path d="M6 4l14 8-14 8V4z" />
-        </svg>
-      </Link>
-      <Link
-        to="/settings"
-        className="flex-1 rounded-full py-3 text-center text-[10px] uppercase tracking-[0.2em] text-muted-foreground transition-colors"
-        activeProps={{ className: "glass-active text-foreground" }}
-      >
-        Paramètres
-      </Link>
+          <Icon size={19} strokeWidth={1.8} fill={to === "/" ? "currentColor" : "none"} aria-hidden="true" />
+          <span className="text-[9px] font-medium uppercase sm:text-[10px]">{label}</span>
+        </Link>
+      ))}
     </nav>
   );
 }
