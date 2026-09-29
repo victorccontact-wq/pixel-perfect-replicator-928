@@ -1,0 +1,4 @@
+- [x] Store each validated set and completed session locally.
+- [x] Add Progression screen with history, records, volume, and load trends.
+- [x] Rework four-item Liquid Glass navigation and pin creator header.
+- [x] Verify mobile navigation and a completed workout end to end.

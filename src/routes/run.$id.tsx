@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { getWorkout, upsertWorkout, type Workout } from "@/lib/storage";
+import { getWorkout, saveSession, uid, upsertWorkout, type Workout, type WorkoutSession } from "@/lib/storage";
 import { loadSettings } from "@/lib/settings";
 import { bassImpact, haptic, primeAudio, tick } from "@/lib/feedback";
 
@@ -43,10 +43,12 @@ function Run() {
   const [arm, setArm] = useState(5);
   const [rest, setRest] = useState(0);
   const lastTick = useRef(0);
+  const session = useRef<WorkoutSession | null>(null);
 
   useEffect(() => {
     setWorkout(getWorkout(id) ?? null);
     setArmDelay(loadSettings().autoRestDelay);
+    session.current = { id: uid(), workoutId: id, workoutName: getWorkout(id)?.name ?? "SÉANCE", startedAt: Date.now(), sets: [] };
   }, [id]);
 
   const exercise = workout?.exercises[exIndex];
@@ -100,11 +102,22 @@ function Run() {
   }, [phase, rest]);
 
   const validateSet = useCallback(() => {
-    if (!workout || !exercise) return;
+    if (!workout || !exercise || phase !== "work") return;
     primeAudio();
     haptic(40);
     const isLastSet = setIndex + 1 >= exercise.sets;
     const isLastEx = exIndex + 1 >= workout.exercises.length;
+    const current = session.current;
+    if (current) {
+      const now = Date.now();
+      const updated: WorkoutSession = {
+        ...current,
+        sets: [...current.sets, { exerciseId: exercise.id, exerciseName: exercise.name, load: exercise.load, completedAt: now }],
+        ...(isLastSet && isLastEx ? { completedAt: now } : {}),
+      };
+      session.current = updated;
+      saveSession(updated);
+    }
 
     if (isLastSet && isLastEx) {
       setPhase("done");
@@ -120,7 +133,7 @@ function Run() {
     }
     setArm(armDelay);
     setPhase("arming");
-  }, [workout, exercise, setIndex, exIndex, armDelay]);
+  }, [workout, exercise, setIndex, exIndex, armDelay, phase]);
 
   const changeLoad = (delta: number) => {
     if (!workout || !exercise) return;
@@ -277,7 +290,8 @@ function Run() {
         ) : (
           <button
             onClick={validateSet}
-            className="col-span-2 bg-primary py-5 text-sm font-bold uppercase tracking-[0.3em] text-primary-foreground"
+            disabled={phase !== "work"}
+            className="col-span-2 bg-primary py-5 text-sm font-bold uppercase tracking-[0.3em] text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50"
           >
             [ VALIDER_SÉRIE ]
           </button>

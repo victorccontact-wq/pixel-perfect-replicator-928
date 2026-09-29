@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
   emptyWorkout,
   getWorkout,
@@ -82,17 +83,20 @@ function Builder() {
   };
 
   return (
-    <main className="min-h-screen bg-background px-5 pb-28 pt-10">
-      <button
-        onClick={() => void navigate({ to: "/" })}
-        className="label-tech transition-colors hover:text-foreground"
-      >
-        [ ← RETOUR ]
-      </button>
-
-      <h1 className="mt-6 text-2xl font-bold uppercase tracking-[0.25em]">
-        Créateur
-      </h1>
+    <main className="min-h-screen bg-background px-5 pb-28">
+      <header className="sticky top-0 z-40 -mx-5 border-b border-border bg-background px-5 pb-4 pt-[max(1.25rem,env(safe-area-inset-top))]">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => void navigate({ to: "/configure" })}
+          className="label-tech h-7 px-0 transition-colors hover:bg-transparent hover:text-foreground"
+        >
+          [ ← RETOUR ]
+        </Button>
+        <h1 className="mt-2 text-2xl font-bold uppercase tracking-[0.25em]">
+          Créateur
+        </h1>
+      </header>
 
       <div className="mt-6">
         <p className="label-tech">[ NOM_SÉANCE ]</p>
