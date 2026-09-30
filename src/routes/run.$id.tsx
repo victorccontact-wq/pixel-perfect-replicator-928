@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { getWorkout, saveSession, uid, upsertWorkout, type Workout, type WorkoutSession } from "@/lib/storage";
 import { loadSettings } from "@/lib/settings";
 import { bassImpact, haptic, primeAudio, tick } from "@/lib/feedback";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/run/$id")({
   head: () => ({
@@ -14,6 +15,8 @@ export const Route = createFileRoute("/run/$id")({
           "Exécution de séance avec minuteur de repos automatique déclenché par inactivité.",
       },
       { property: "og:title", content: "MYO — Exécution" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
       {
         property: "og:description",
         content: "Posez le téléphone, le repos se lance tout seul.",
@@ -151,9 +154,9 @@ function Run() {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center gap-4">
         <p className="label-tech">[ SÉANCE_INTROUVABLE ]</p>
-        <button onClick={() => void navigate({ to: "/" })} className="tag">
+        <Button variant="outline" onClick={() => void navigate({ to: "/" })}>
           RETOUR
-        </button>
+        </Button>
       </main>
     );
   }
@@ -162,9 +165,9 @@ function Run() {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center gap-4 px-6 text-center">
         <p className="label-tech">[ AUCUN_EXERCICE ]</p>
-        <button onClick={() => void navigate({ to: "/workout/$id", params: { id } })} className="tag">
+        <Button variant="outline" onClick={() => void navigate({ to: "/workout/$id", params: { id } })}>
           CONFIGURER
-        </button>
+        </Button>
       </main>
     );
   }
@@ -173,29 +176,30 @@ function Run() {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center gap-6 px-6 text-center">
         <p className="label-tech">[ SESSION_TERMINÉE ]</p>
-        <h1 className="text-4xl font-bold uppercase tracking-[0.25em]">
+        <h1 className="myo-title break-words">
           {workout.name}
         </h1>
-        <button
+        <Button
           onClick={() => void navigate({ to: "/" })}
-          className="border border-foreground px-8 py-4 text-xs font-bold uppercase tracking-[0.3em] transition-colors hover:bg-primary hover:text-primary-foreground"
+          variant="outline"
+          className="h-12 px-8 text-sm font-bold uppercase"
         >
           [ SORTIR ]
-        </button>
+        </Button>
       </main>
     );
   }
 
   return (
-    <main className="flex min-h-screen flex-col bg-background px-5 pb-8 pt-8">
+    <main className="mx-auto flex min-h-dvh max-w-4xl flex-col bg-background px-6 pb-8 pt-[max(2rem,env(safe-area-inset-top))]">
       <div className="flex items-center justify-between border-b border-border pb-4">
-        <button
+        <Button variant="ghost" size="icon" aria-label="Quitter la séance"
           onClick={() => void navigate({ to: "/" })}
-          className="label-tech hover:text-foreground"
+          className="text-muted-foreground hover:text-foreground"
         >
-          [ ✕ ]
-        </button>
-        <span className="label-tech">{workout.name}</span>
+          ✕
+        </Button>
+        <span className="min-w-0 truncate px-2 text-sm font-semibold uppercase">{workout.name}</span>
         <span className="tag">
           {exIndex + 1}/{workout.exercises.length}
         </span>
@@ -205,37 +209,37 @@ function Run() {
         <p className="label-tech">
           [ SET_{String(setIndex + 1).padStart(2, "0")} / {exercise?.sets} ]
         </p>
-        <h1 className="mt-2 text-3xl font-bold uppercase leading-tight tracking-[0.15em]">
+        <h1 className="myo-title mt-3 break-words">
           {exercise?.name}
         </h1>
         <p className="mt-3 text-sm text-muted-foreground">REPOS {exercise?.rest}s</p>
         <div className="mt-4 flex items-stretch border border-border">
-          <button
+          <Button variant="ghost"
             onClick={() => changeLoad(-2.5)}
             aria-label="Diminuer la charge"
-            className="w-16 border-r border-border text-2xl font-bold hover:bg-secondary"
+            className="h-auto w-16 rounded-none border-r border-border text-2xl font-bold hover:bg-secondary"
           >
             −
-          </button>
+          </Button>
           <div className="flex flex-1 flex-col items-center py-3">
             <span className="label-tech">[ CHARGE_KG ]</span>
-            <span className="mt-1 text-3xl font-bold">{exercise?.load}</span>
+            <span className="mt-1 font-mono text-3xl font-bold">{exercise?.load}</span>
           </div>
-          <button
+          <Button variant="ghost"
             onClick={() => changeLoad(2.5)}
             aria-label="Augmenter la charge"
-            className="w-16 border-l border-border text-2xl font-bold hover:bg-secondary"
+            className="h-auto w-16 rounded-none border-l border-border text-2xl font-bold hover:bg-secondary"
           >
             +
-          </button>
+          </Button>
         </div>
       </div>
 
-      <div className="mt-10 flex flex-1 flex-col items-center justify-center border border-border">
+      <div className="mt-10 flex min-h-60 flex-1 flex-col items-center justify-center border-y border-border py-8">
         {phase === "work" && (
           <>
             <p className="label-tech">[ SÉRIE_EN_COURS ]</p>
-            <p className="mt-4 text-6xl font-bold tracking-tight">--:--</p>
+            <p className="mt-4 font-mono text-6xl font-bold">--:--</p>
             <p className="mt-4 px-8 text-center text-xs text-muted-foreground">
               Validez la série puis posez le téléphone.
             </p>
@@ -244,7 +248,7 @@ function Run() {
         {phase === "arming" && (
           <>
             <p className="label-tech">[ ARMEMENT_MINUTEUR ]</p>
-            <p className="mt-4 text-6xl font-bold tracking-tight text-muted-foreground">
+            <p className="mt-4 font-mono text-6xl font-bold text-muted-foreground">
               {arm}
             </p>
             <p className="mt-4 px-8 text-center text-xs text-muted-foreground">
@@ -255,7 +259,7 @@ function Run() {
         {phase === "rest" && (
           <>
             <p className="label-tech">[ REPOS ]</p>
-            <p className="mt-4 text-7xl font-bold tracking-tight">{fmt(rest)}</p>
+            <p className="mt-4 font-mono text-7xl font-bold">{fmt(rest)}</p>
             <div className="mt-6 h-px w-2/3 bg-border">
               <div
                 className="h-px bg-foreground transition-all duration-1000"
@@ -271,30 +275,30 @@ function Run() {
       <div className="mt-6 grid grid-cols-2 gap-3">
         {phase === "rest" ? (
           <>
-            <button
+            <Button variant="outline"
               onClick={() => setRest((r) => r + 30)}
-              className="border border-border py-4 text-xs uppercase tracking-[0.25em] text-muted-foreground hover:text-foreground"
+              className="h-14 text-sm uppercase text-muted-foreground hover:text-foreground"
             >
               [ +30s ]
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => {
                 setPhase("work");
                 haptic(40);
               }}
-              className="bg-primary py-4 text-xs font-bold uppercase tracking-[0.25em] text-primary-foreground"
+              className="h-14 text-sm font-bold uppercase"
             >
               [ REPRENDRE ]
-            </button>
+            </Button>
           </>
         ) : (
-          <button
+          <Button
             onClick={validateSet}
             disabled={phase !== "work"}
-            className="col-span-2 bg-primary py-5 text-sm font-bold uppercase tracking-[0.3em] text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50"
+            className="col-span-2 h-16 text-sm font-bold uppercase"
           >
             [ VALIDER_SÉRIE ]
-          </button>
+          </Button>
         )}
       </div>
     </main>
