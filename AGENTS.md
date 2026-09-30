@@ -10,3 +10,4 @@
 <!-- LOVABLE:END -->
 
 MYO workout templates remain in `myo.workouts.v1`, while per-set session history is stored separately in `myo.history.v1`; this preserves existing templates and keeps progress local/offline.
+MYO visual roles are centralized in `src/styles.css` using OLED semantic tokens, Bebas Neue display headings, Barlow body text, and JetBrains Mono technical labels; this keeps all screens visually consistent.
