@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { ArrowRight, Plus, Search, SlidersHorizontal } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   deleteWorkout,
   loadWorkouts,
@@ -13,6 +15,8 @@ export const Route = createFileRoute("/configure")({
       { name: "description", content: "Créez et modifiez vos séances de musculation." },
       { property: "og:title", content: "MYO — Configurer une séance" },
       { property: "og:description", content: "Créez et modifiez vos séances de musculation." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: ConfigurePage,
@@ -36,43 +40,44 @@ function ConfigurePage() {
   );
 
   return (
-    <main className="min-h-screen bg-background px-5 pb-32 pt-10">
-      <header className="border-b border-border pb-5">
-        <p className="label-tech">[ CONSTRUCTEUR ]</p>
-        <h1 className="mt-1 text-3xl font-bold uppercase tracking-[0.25em]">
-          Configurer
-        </h1>
+    <main className="myo-page bg-background">
+      <header className="border-b border-border pb-6">
+        <p className="label-tech mb-3">[ MYO / 02 ]</p>
+        <h1 className="myo-title">Configurer</h1>
       </header>
 
-      <div className="mt-6">
+      {workouts.length > 0 && <div className="relative mt-7">
+        <Search size={18} aria-hidden="true" className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
         <input
+          aria-label="Rechercher une séance"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="RECHERCHER…"
-          className="field w-full px-4 py-3 text-sm uppercase tracking-widest placeholder:text-muted-foreground"
+          placeholder="Rechercher une séance"
+          className="field w-full py-3 pl-11 pr-4 text-base placeholder:text-muted-foreground"
         />
-      </div>
+      </div>}
 
-      <Link
+      {workouts.length > 0 && <Link
         to="/workout/$id"
         params={{ id: "new" }}
-        className="mt-4 block w-full border border-dashed border-border py-3 text-center text-xs uppercase tracking-[0.3em] text-muted-foreground transition-colors hover:border-foreground hover:text-foreground"
+        className="mt-4 flex w-full items-center justify-center gap-2 bg-primary py-3 text-sm font-semibold uppercase text-primary-foreground"
       >
-        + Nouvelle séance
-      </Link>
+        <Plus size={18} aria-hidden="true" /> Nouvelle séance
+      </Link>}
 
-      <section className="mt-6 space-y-3">
-        {filtered.length === 0 && (
-          <p className="py-10 text-center text-xs uppercase tracking-widest text-muted-foreground">
-            {workouts.length === 0
-              ? "Aucune séance — créez la première"
-              : "Aucun résultat"}
-          </p>
-        )}
+      {workouts.length === 0 ? <section className="myo-empty px-4">
+        <SlidersHorizontal size={56} strokeWidth={1} aria-hidden="true" className="mb-7 text-muted-foreground" />
+        <h2 className="myo-section-title">Aucune séance</h2>
+        <p className="mt-3 max-w-xs text-lg leading-snug text-muted-foreground">Créez votre première séance pour commencer.</p>
+        <Link to="/workout/$id" params={{ id: "new" }} className="mt-6 inline-flex items-center gap-2 border-b border-foreground pb-1 text-base font-semibold text-foreground hover:opacity-70">
+          Créer une séance <ArrowRight size={18} aria-hidden="true" />
+        </Link>
+      </section> : <section className="mt-7 space-y-3">
+        {filtered.length === 0 && <p className="py-10 text-center text-base text-muted-foreground">Aucun résultat</p>}
         {filtered.map((w) => (
-          <article key={w.id} className="panel px-4 py-4">
+          <article key={w.id} className="panel px-5 py-5">
             <div className="flex items-baseline justify-between gap-3">
-              <h2 className="text-lg font-bold uppercase tracking-wider">
+              <h2 className="myo-section-title break-words">
                 {w.name}
               </h2>
               <span className="tag">{w.exercises.length} EXO</span>
@@ -81,20 +86,21 @@ function ConfigurePage() {
               <Link
                 to="/workout/$id"
                 params={{ id: w.id }}
-                className="bg-primary py-2.5 text-center text-xs font-bold uppercase tracking-widest text-primary-foreground"
+                className="bg-primary py-3 text-center text-sm font-semibold uppercase text-primary-foreground"
               >
                 Éditer
               </Link>
-              <button
+              <Button
+                variant="outline"
                 onClick={() => remove(w.id)}
-                className="border border-border py-2.5 text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:border-destructive hover:text-destructive"
+                className="h-auto border-border py-3 text-sm font-semibold uppercase text-muted-foreground hover:border-destructive hover:text-destructive"
               >
-                Suppr
-              </button>
+                Supprimer
+              </Button>
             </div>
           </article>
         ))}
-      </section>
+      </section>}
     </main>
   );
 }

@@ -23,11 +23,11 @@ export function GlassNav() {
           to={to}
           aria-label={label === "Lancer" ? "Lancer une séance" : label}
           activeOptions={{ exact: true }}
-          className="flex min-w-0 flex-col items-center justify-center gap-1 rounded-full px-0.5 py-2 text-muted-foreground transition-colors"
+          className="flex min-w-0 flex-col items-center justify-center gap-1 rounded-full px-0.5 py-2 text-muted-foreground transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
           activeProps={{ className: "glass-active text-foreground" }}
         >
           <Icon size={19} strokeWidth={1.8} fill={to === "/" ? "currentColor" : "none"} aria-hidden="true" />
-          <span className="text-[9px] font-medium uppercase sm:text-[10px]">{label}</span>
+          <span className="text-[10px] font-semibold uppercase sm:text-xs">{label}</span>
         </Link>
       ))}
     </nav>
