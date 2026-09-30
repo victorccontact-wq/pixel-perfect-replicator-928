@@ -19,6 +19,8 @@ export const Route = createFileRoute("/workout/$id")({
         content: "Paramétrez exercices, séries, charges et temps de repos.",
       },
       { property: "og:title", content: "MYO — Créateur de séance" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
       {
         property: "og:description",
         content: "Exercices, séries, charges et repos ciblé par exercice.",
@@ -83,8 +85,8 @@ function Builder() {
   };
 
   return (
-    <main className="min-h-screen bg-background px-5 pb-28">
-      <header className="sticky top-0 z-40 -mx-5 border-b border-border bg-background px-5 pb-4 pt-[max(1.25rem,env(safe-area-inset-top))]">
+    <main className="mx-auto min-h-screen max-w-4xl bg-background px-6 pb-28">
+      <header className="sticky top-0 z-40 -mx-6 border-b border-border bg-background px-6 pb-5 pt-[max(1.25rem,env(safe-area-inset-top))]">
         <Button
           variant="ghost"
           size="sm"
@@ -93,7 +95,7 @@ function Builder() {
         >
           [ ← RETOUR ]
         </Button>
-        <h1 className="mt-2 text-2xl font-bold uppercase tracking-[0.25em]">
+        <h1 className="myo-title mt-3">
           Créateur
         </h1>
       </header>
@@ -116,20 +118,20 @@ function Builder() {
                 [ EX_{String(i + 1).padStart(2, "0")} ]
               </span>
               <div className="flex gap-3 text-xs text-muted-foreground">
-                <button onClick={() => move(i, -1)} className="hover:text-foreground">
+                <Button variant="ghost" size="icon" onClick={() => move(i, -1)} aria-label="Monter l'exercice" className="h-8 w-8 hover:text-foreground">
                   ↑
-                </button>
-                <button onClick={() => move(i, 1)} className="hover:text-foreground">
+                </Button>
+                <Button variant="ghost" size="icon" onClick={() => move(i, 1)} aria-label="Descendre l'exercice" className="h-8 w-8 hover:text-foreground">
                   ↓
-                </button>
-                <button
+                </Button>
+                <Button variant="ghost" size="icon" aria-label="Supprimer l'exercice"
                   onClick={() =>
                     patch({ exercises: workout.exercises.filter((e) => e.id !== ex.id) })
                   }
-                  className="hover:text-foreground"
+                  className="h-8 w-8 hover:text-foreground"
                 >
                   ✕
-                </button>
+                </Button>
               </div>
             </div>
 
@@ -162,19 +164,19 @@ function Builder() {
         ))}
       </div>
 
-      <button
+      <Button variant="outline"
         onClick={() => patch({ exercises: [...workout.exercises, newExercise()] })}
-        className="mt-5 w-full border border-dashed border-border py-4 text-xs uppercase tracking-[0.3em] text-muted-foreground transition-colors hover:border-foreground hover:text-foreground"
+        className="mt-5 h-12 w-full border-dashed border-border text-sm uppercase text-muted-foreground hover:border-foreground hover:text-foreground"
       >
         [ + AJOUTER_EXERCICE ]
-      </button>
+      </Button>
 
-      <button
+      <Button
         onClick={save}
-        className="fixed inset-x-5 bottom-6 mx-auto block max-w-md bg-primary py-4 text-sm font-bold uppercase tracking-[0.3em] text-primary-foreground"
+        className="fixed inset-x-5 bottom-6 mx-auto h-14 w-[calc(100%-2.5rem)] max-w-md text-sm font-bold uppercase"
       >
         [ ENREGISTRER ]
-      </button>
+      </Button>
     </main>
   );
 }

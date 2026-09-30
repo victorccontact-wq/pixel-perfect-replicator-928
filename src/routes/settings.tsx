@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { DEFAULTS, loadSettings, saveSettings, type Settings } from "@/lib/settings";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/settings")({
   head: () => ({
@@ -9,6 +10,8 @@ export const Route = createFileRoute("/settings")({
       { name: "description", content: "Réglages MYO : sons, vibrations, minuteur." },
       { property: "og:title", content: "MYO — Paramètres" },
       { property: "og:description", content: "Réglages MYO : sons, vibrations, minuteur." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: SettingsPage,
@@ -28,68 +31,82 @@ function SettingsPage() {
   };
 
   return (
-    <main className="min-h-screen bg-background px-5 pb-32 pt-10">
-      <header className="border-b border-border pb-5">
-        <p className="label-tech">[ SYSTÈME ]</p>
-        <h1 className="mt-1 text-3xl font-bold uppercase tracking-[0.25em]">
+    <main className="myo-page bg-background">
+      <header className="border-b border-border pb-6">
+        <p className="label-tech mb-3">[ MYO / 04 ]</p>
+        <h1 className="myo-title">
           Paramètres
         </h1>
       </header>
 
-      <section className="mt-8 space-y-3">
-        <div className="panel flex items-center justify-between px-4 py-4">
+      <section className="mt-8 divide-y divide-border border-y border-border">
+        <div className="flex items-center justify-between gap-4 py-5">
           <div>
-            <p className="text-sm uppercase tracking-widest">Sons</p>
-            <p className="mt-1 text-xs text-muted-foreground">
+            <p className="myo-section-title">Sons</p>
+            <p className="mt-1 text-sm text-muted-foreground">
               Impact de basse à la reprise
             </p>
           </div>
-          <button
+          <Button
+            variant={s.sound ? "default" : "outline"}
+            size="sm"
+            role="switch"
+            aria-checked={s.sound}
+            aria-label="Sons"
             onClick={() => update({ sound: !s.sound })}
-            className={`tag ${s.sound ? "bg-primary text-primary-foreground" : ""}`}
+            className="w-14 shrink-0 font-mono text-xs"
           >
             {s.sound ? "ON" : "OFF"}
-          </button>
+          </Button>
         </div>
 
-        <div className="panel flex items-center justify-between px-4 py-4">
+        <div className="flex items-center justify-between gap-4 py-5">
           <div>
-            <p className="text-sm uppercase tracking-widest">Vibrations</p>
-            <p className="mt-1 text-xs text-muted-foreground">
+            <p className="myo-section-title">Vibrations</p>
+            <p className="mt-1 text-sm text-muted-foreground">
               Retour haptique sur les validations
             </p>
           </div>
-          <button
+          <Button
+            variant={s.haptics ? "default" : "outline"}
+            size="sm"
+            role="switch"
+            aria-checked={s.haptics}
+            aria-label="Vibrations"
             onClick={() => update({ haptics: !s.haptics })}
-            className={`tag ${s.haptics ? "bg-primary text-primary-foreground" : ""}`}
+            className="w-14 shrink-0 font-mono text-xs"
           >
             {s.haptics ? "ON" : "OFF"}
-          </button>
+          </Button>
         </div>
 
-        <div className="panel flex items-center justify-between px-4 py-4">
-          <div>
-            <p className="text-sm uppercase tracking-widest">Repos auto</p>
-            <p className="mt-1 text-xs text-muted-foreground">
+        <div className="flex flex-wrap items-center justify-between gap-4 py-5">
+          <div className="min-w-0">
+            <p className="myo-section-title">Repos auto</p>
+            <p className="mt-1 text-sm text-muted-foreground">
               Délai d'inactivité avant le minuteur
             </p>
           </div>
-          <div className="flex items-center gap-3">
-            <button
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="icon"
+              aria-label="Diminuer le délai"
               onClick={() => update({ autoRestDelay: Math.max(0, s.autoRestDelay - 1) })}
-              className="tag"
             >
               −
-            </button>
-            <span className="w-10 text-center text-sm font-bold">
+            </Button>
+            <span className="w-12 text-center font-mono text-sm font-bold">
               {s.autoRestDelay}s
             </span>
-            <button
+            <Button
+              variant="outline"
+              size="icon"
+              aria-label="Augmenter le délai"
               onClick={() => update({ autoRestDelay: Math.min(30, s.autoRestDelay + 1) })}
-              className="tag"
             >
               +
-            </button>
+            </Button>
           </div>
         </div>
       </section>

@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { loadSessions, type WorkoutSession } from "@/lib/storage";
+import { ArrowRight, ChartNoAxesCombined } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/progress")({
   head: () => ({
@@ -59,18 +61,19 @@ function ProgressPage() {
   const volume = sessions.reduce((sum, session) => sum + session.sets.reduce((subtotal, set) => subtotal + set.load, 0), 0);
 
   return (
-    <main className="mx-auto min-h-screen max-w-3xl bg-background px-5 pb-36 pt-10">
-      <header className="border-b border-border pb-5">
-        <p className="label-tech">[ JOURNAL / MYO ]</p>
-        <h1 className="mt-1 text-2xl font-bold uppercase sm:text-3xl">Progression</h1>
+    <main className="myo-page bg-background">
+      <header className="border-b border-border pb-6">
+        <p className="label-tech mb-3">[ MYO / 03 ]</p>
+        <h1 className="myo-title">Progression</h1>
       </header>
 
       {sessions.length === 0 ? (
-        <div className="mt-16 border-y border-border py-12 text-center">
-          <p className="text-3xl font-bold">—</p>
-          <p className="mt-5 text-sm uppercase">Aucune séance terminée</p>
-          <p className="mt-2 text-xs text-muted-foreground">Vos résultats apparaîtront ici après votre première séance.</p>
-        </div>
+        <section className="myo-empty px-4">
+          <ChartNoAxesCombined size={56} strokeWidth={1} aria-hidden="true" className="mb-7 text-muted-foreground" />
+          <h2 className="myo-section-title">Aucune séance terminée</h2>
+          <p className="mt-3 max-w-xs text-lg leading-snug text-muted-foreground">Vos résultats apparaîtront ici après votre première séance.</p>
+          <Link to="/" className="mt-6 inline-flex items-center gap-2 border-b border-foreground pb-1 text-base font-semibold text-foreground hover:opacity-70">Lancer une séance <ArrowRight size={18} aria-hidden="true" /></Link>
+        </section>
       ) : (
         <>
           <section aria-label="Résumé" className="grid grid-cols-3 border-b border-border py-6">
@@ -79,7 +82,7 @@ function ProgressPage() {
             <Stat label="VOLUME" value={`${number.format(volume)} kg`} />
           </section>
 
-          <section className="mt-10">
+           <section className="mt-10">
             <SectionTitle index="01" title="ÉVOLUTION DES CHARGES" />
             <label className="mt-5 block">
               <span className="label-tech">[ EXERCICE ]</span>
@@ -90,7 +93,7 @@ function ProgressPage() {
             {active && (
               <div className="mt-5 border border-border p-4 sm:p-6">
                 <div className="flex items-end justify-between gap-3 border-b border-border pb-4">
-                  <div><p className="label-tech">[ DERNIÈRE CHARGE ]</p><p className="mt-1 text-2xl font-bold">{number.format(active.points.at(-1)?.load ?? 0)} <span className="text-sm text-muted-foreground">KG</span></p></div>
+                   <div><p className="label-tech">[ DERNIÈRE CHARGE ]</p><p className="mt-1 font-mono text-2xl font-bold">{number.format(active.points.at(-1)?.load ?? 0)} <span className="text-sm text-muted-foreground">KG</span></p></div>
                   <p className="text-xs text-muted-foreground">{active.points.length} SÉRIE{active.points.length > 1 ? "S" : ""}</p>
                 </div>
                 <div aria-label={`Évolution de ${active.name}`} className="mt-6 border-b border-border">
@@ -115,7 +118,7 @@ function ProgressPage() {
               {exercises.map(([key, exercise]) => (
                 <div key={key} className="flex items-center justify-between gap-3 py-4 text-sm">
                   <span className="min-w-0 break-words uppercase">{exercise.name}</span>
-                  <span className="shrink-0 font-bold">{number.format(exercise.record)} KG</span>
+                   <span className="shrink-0 font-mono font-bold">{number.format(exercise.record)} KG</span>
                 </div>
               ))}
             </div>
@@ -137,7 +140,7 @@ function ProgressPage() {
                 return (
                   <details key={session.id} className="group py-4">
                     <summary className="flex cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
-                      <div className="min-w-0"><p className="truncate text-sm font-bold uppercase">{session.workoutName}</p><p className="mt-1 text-[11px] text-muted-foreground">{date.format(session.completedAt ?? 0)} · {time.format(session.completedAt ?? 0)}</p></div>
+                       <div className="min-w-0"><p className="truncate text-lg font-semibold uppercase">{session.workoutName}</p><p className="mt-1 text-xs text-muted-foreground">{date.format(session.completedAt ?? 0)} · {time.format(session.completedAt ?? 0)}</p></div>
                       <div className="flex shrink-0 items-center gap-3 text-xs"><span>{session.sets.length} SÉRIES</span><span className="text-muted-foreground group-open:rotate-180">⌄</span></div>
                     </summary>
                     <div className="mt-4 border-t border-border pt-3">
@@ -161,9 +164,9 @@ function ProgressPage() {
 }
 
 function SectionTitle({ index, title }: { index: string; title: string }) {
-  return <div className="flex items-baseline gap-3 border-b border-border pb-3"><span className="label-tech">[{index}]</span><h2 className="text-sm font-bold uppercase">{title}</h2></div>;
+   return <div className="flex items-baseline gap-3 border-b border-border pb-3"><span className="label-tech">[{index}]</span><h2 className="myo-section-title">{title}</h2></div>;
 }
 
 function Stat({ label, value }: { label: string; value: string }) {
-  return <div className="min-w-0 border-r border-border px-2 first:pl-0 last:border-0 last:pr-0 sm:px-5"><p className="label-tech">{label}</p><p className="mt-2 break-words text-lg font-bold sm:text-2xl">{value}</p></div>;
+   return <div className="min-w-0 border-r border-border px-2 first:pl-0 last:border-0 last:pr-0 sm:px-5"><p className="label-tech">{label}</p><p className="mt-2 break-words font-mono text-base font-bold sm:text-2xl">{value}</p></div>;
 }
