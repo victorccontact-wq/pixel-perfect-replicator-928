@@ -10,10 +10,10 @@
  */
 
 @theme inline {
-  --radius-sm: 0px;
-  --radius-md: 0px;
-  --radius-lg: 0px;
-  --radius-xl: 0px;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
    --font-mono: var(--font-technical);
    --font-sans: var(--font-body);
   --color-background: var(--background);
@@ -39,7 +39,7 @@
 }
 
 :root {
-  --radius: 0px;
+  --radius: 1rem;
   --font-technical: "JetBrains Mono", "SFMono-Regular", ui-monospace, monospace;
   --font-display: "Bebas Neue", Impact, sans-serif;
   --font-body: "Barlow", Arial, sans-serif;
