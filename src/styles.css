@@ -44,7 +44,7 @@
   --font-display: "Bebas Neue", Impact, sans-serif;
   --font-body: "Barlow", Arial, sans-serif;
 
-  --background: oklch(0 0 0);
+  --background: #212121;
   --foreground: oklch(1 0 0);
   --card: #171717;
   --card-foreground: oklch(1 0 0);
