@@ -6,7 +6,7 @@
 
 /*
  * MYO design system — "cockpit de pilotage".
- * Noir absolu OLED, blanc pur, gris techniques. Typographie monospacée.
+ * Palette anthracite, blanc pur, gris techniques. Typographie monospacée.
  */
 
 @theme inline {
@@ -44,26 +44,30 @@
   --font-display: "Bebas Neue", Impact, sans-serif;
   --font-body: "Barlow", Arial, sans-serif;
 
-  --background: #212121;
+  --background: #141414;
   --foreground: oklch(1 0 0);
-  --card: #171717;
+  --card: #222222;
   --card-foreground: oklch(1 0 0);
-  --popover: oklch(0.1 0 0);
+  --popover: #242424;
   --popover-foreground: oklch(1 0 0);
   --primary: oklch(1 0 0);
-  --primary-foreground: oklch(0 0 0);
-  --secondary: #171717;
+  --primary-foreground: #141414;
+  --secondary: #242424;
   --secondary-foreground: oklch(1 0 0);
-  --muted: oklch(0.18 0 0);
-  --muted-foreground: #777777;
-  --accent: oklch(0.28 0 0);
+  --muted: #262626;
+  --muted-foreground: #aaaaaa;
+  --accent: #323232;
   --accent-foreground: oklch(1 0 0);
   --destructive: oklch(0.55 0.02 0);
   --destructive-foreground: oklch(1 0 0);
-  --border: #171717;
-  --input: #777777;
+  --border: #343434;
+  --input: #454545;
   --ring: oklch(1 0 0);
-  --grid: oklch(0.22 0 0);
+  --grid: #343434;
+  --glass-surface: rgb(36 36 36 / 0.88);
+  --glass-border: rgb(255 255 255 / 0.12);
+  --glass-highlight: rgb(255 255 255 / 0.09);
+  --glass-active: #383838;
 }
 
 .dark {
@@ -114,12 +118,12 @@
 
 @utility panel {
   border: 1px solid var(--color-border);
-  background-color: var(--color-background);
+  background-color: var(--color-card);
 }
 
 @utility field {
   width: 100%;
-  background-color: transparent;
+  background-color: var(--color-secondary);
   border: 1px solid var(--color-border);
   padding: 0.75rem;
   color: var(--color-foreground);
@@ -131,16 +135,16 @@
 }
 
 @utility glass {
-  background: linear-gradient(180deg, oklch(1 0 0 / 0.1), oklch(1 0 0 / 0.03));
+  background: var(--glass-surface);
   backdrop-filter: blur(22px) saturate(180%);
   -webkit-backdrop-filter: blur(22px) saturate(180%);
-  border: 1px solid oklch(1 0 0 / 0.14);
-  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.22), inset 0 -1px 0 oklch(1 0 0 / 0.05), 0 12px 40px oklch(0 0 0 / 0.6);
+  border: 1px solid var(--glass-border);
+  box-shadow: inset 0 1px 0 var(--glass-highlight), 0 12px 40px rgb(0 0 0 / 0.35);
 }
 
 @utility glass-active {
-  background: oklch(1 0 0 / 0.16);
-  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.25);
+  background: var(--glass-active);
+  box-shadow: inset 0 1px 0 var(--glass-highlight);
 }
 
 @utility myo-page {
