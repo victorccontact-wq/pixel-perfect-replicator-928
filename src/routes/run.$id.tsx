@@ -217,7 +217,7 @@ function Run() {
           <Button variant="ghost"
             onClick={() => changeLoad(-2.5)}
             aria-label="Diminuer la charge"
-            className="h-auto w-16 rounded-none border-r border-border text-2xl font-bold hover:bg-secondary"
+            className="h-auto w-16 border-r border-border text-2xl font-bold hover:bg-secondary"
           >
             −
           </Button>
@@ -228,7 +228,7 @@ function Run() {
           <Button variant="ghost"
             onClick={() => changeLoad(2.5)}
             aria-label="Augmenter la charge"
-            className="h-auto w-16 rounded-none border-l border-border text-2xl font-bold hover:bg-secondary"
+            className="h-auto w-16 border-l border-border text-2xl font-bold hover:bg-secondary"
           >
             +
           </Button>
