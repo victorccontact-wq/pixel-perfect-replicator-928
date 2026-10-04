@@ -2,8 +2,8 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { ChartNoAxesCombined, Play, Settings2, SlidersHorizontal } from "lucide-react";
 
 const items = [
-  { to: "/configure", label: "Configurer", Icon: SlidersHorizontal },
   { to: "/progress", label: "Progression", Icon: ChartNoAxesCombined },
+  { to: "/configure", label: "Configurer", Icon: SlidersHorizontal },
   { to: "/", label: "Lancer", Icon: Play },
   { to: "/settings", label: "Paramètres", Icon: Settings2 },
 ] as const;
@@ -23,11 +23,10 @@ export function GlassNav() {
           to={to}
           aria-label={label === "Lancer" ? "Lancer une séance" : label}
           activeOptions={{ exact: true }}
-          className="flex min-w-0 flex-col items-center justify-center gap-1 rounded-full px-0.5 py-2 text-muted-foreground transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+          className="flex min-w-0 flex-col items-center justify-center rounded-full px-0.5 py-2.5 text-muted-foreground transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
           activeProps={{ className: "glass-active text-foreground" }}
         >
-          <Icon size={19} strokeWidth={1.8} fill={to === "/" ? "currentColor" : "none"} aria-hidden="true" />
-          <span className="text-[10px] font-semibold uppercase sm:text-xs">{label}</span>
+          <Icon size={21} strokeWidth={1.8} fill={to === "/" ? "currentColor" : "none"} aria-hidden="true" />
         </Link>
       ))}
     </nav>
