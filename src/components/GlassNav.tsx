@@ -29,12 +29,11 @@ export function GlassNav() {
             activeProps={{ className: "glass-active text-foreground" }}
           >
             <Icon
-              key={path}
               size={21}
               strokeWidth={active ? 2.4 : 1.8}
               fill={active && to === "/" ? "currentColor" : "none"}
               aria-hidden="true"
-              className="nav-pop"
+              className={active ? "nav-pop" : undefined}
             />
           </Link>
         );
