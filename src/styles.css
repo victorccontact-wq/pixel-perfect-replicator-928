@@ -185,19 +185,19 @@
   transition: transform 0.15s ease;
 }
 
-.glass nav-link:hover .nav-icon,
-.glass nav-link:focus-visible .nav-icon {
+.glass .nav-link:hover .nav-icon,
+.glass .nav-link:focus-visible .nav-icon {
   animation: icon-wiggle 0.45s ease-out both;
 }
 
-.glass nav-link:active .nav-icon {
+.glass .nav-link:active .nav-icon {
   transform: scale(0.82);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .nav-pop,
-  .glass nav-link:hover .nav-icon,
-  .glass nav-link:focus-visible .nav-icon {
+  .glass .nav-link:hover .nav-icon,
+  .glass .nav-link:focus-visible .nav-icon {
     animation: none;
   }
   .nav-icon {
