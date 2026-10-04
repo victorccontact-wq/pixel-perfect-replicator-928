@@ -166,9 +166,42 @@
   animation: nav-pop 0.48s ease-out both;
 }
 
+@keyframes icon-wiggle {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  35% {
+    transform: scale(1.16) rotate(-8deg);
+  }
+  70% {
+    transform: scale(1.06) rotate(6deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@utility nav-icon {
+  transition: transform 0.15s ease;
+}
+
+.glass nav-link:hover .nav-icon,
+.glass nav-link:focus-visible .nav-icon {
+  animation: icon-wiggle 0.45s ease-out both;
+}
+
+.glass nav-link:active .nav-icon {
+  transform: scale(0.82);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .nav-pop {
+  .nav-pop,
+  .glass nav-link:hover .nav-icon,
+  .glass nav-link:focus-visible .nav-icon {
     animation: none;
+  }
+  .nav-icon {
+    transition: none;
   }
 }
 
