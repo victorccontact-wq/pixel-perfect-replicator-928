@@ -24,11 +24,13 @@ export function GlassNav() {
             key={to}
             to={to}
             aria-label={label === "Lancer" ? "Lancer une séance" : label}
+             aria-current={active ? "page" : undefined}
             activeOptions={{ exact: true }}
             className="nav-link flex min-w-0 items-center justify-center rounded-full px-0.5 py-2.5 text-muted-foreground transition-all duration-200 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
             activeProps={{ className: "glass-active text-foreground" }}
           >
             <Icon
+              key={active ? "selected" : "idle"}
               size={21}
               strokeWidth={active ? 2.4 : 1.8}
               fill={active && to === "/" ? "currentColor" : "none"}
