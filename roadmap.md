@@ -4,3 +4,4 @@
 - [x] Verify mobile navigation and a completed workout end to end.
 - [x] Restyle all MYO screens in the chosen centered OLED dashboard direction.
 - [x] Check empty and populated mobile screens for readable layout and working navigation.
+- [ ] Add and verify an Instagram-style spring pop when selecting another navigation tab.
