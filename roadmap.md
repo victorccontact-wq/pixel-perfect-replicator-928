@@ -5,3 +5,4 @@
 - [x] Restyle all MYO screens in the chosen centered OLED dashboard direction.
 - [x] Check empty and populated mobile screens for readable layout and working navigation.
 - [x] Add and verify an Instagram-style spring pop when selecting another navigation tab.
+- [ ] Investigate and resolve the preview React dispatcher crash; verify navigation after a fresh load.
