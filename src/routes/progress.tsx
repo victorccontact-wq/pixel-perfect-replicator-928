@@ -114,7 +114,7 @@ function ProgressPage() {
 
           <section className="mt-10">
             <SectionTitle index="02" title="RECORDS PERSONNELS" />
-            <div className="mt-4 divide-y divide-border border-y border-border">
+            <div className="panel mt-4 divide-y divide-border px-5">
               {exercises.map(([key, exercise]) => (
                 <div key={key} className="flex items-center justify-between gap-3 py-4 text-sm">
                   <span className="min-w-0 break-words uppercase">{exercise.name}</span>
@@ -126,7 +126,7 @@ function ProgressPage() {
 
           <section className="mt-10">
             <SectionTitle index="03" title="HISTORIQUE" />
-            <div className="mt-4 divide-y divide-border border-y border-border">
+            <div className="panel mt-4 divide-y divide-border px-5">
               {sessions.map((session) => {
                 const details = new Map<string, { name: string; count: number; max: number; volume: number }>();
                 for (const set of session.sets) {
