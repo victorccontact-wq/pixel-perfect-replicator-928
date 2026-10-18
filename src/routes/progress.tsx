@@ -76,7 +76,7 @@ function ProgressPage() {
         </section>
       ) : (
         <>
-          <section aria-label="Résumé" className="panel grid grid-cols-3 py-5">
+          <section aria-label="Résumé" className="panel grid grid-cols-3 py-5 pl-4 pr-2">
             <Stat label="SÉANCES" value={number.format(sessions.length)} />
             <Stat label="SÉRIES" value={number.format(totalSets)} />
             <Stat label="VOLUME" value={`${number.format(volume)} kg`} />
