@@ -60,7 +60,7 @@ function ConfigurePage() {
       {workouts.length > 0 && <Link
         to="/workout/$id"
         params={{ id: "new" }}
-        className="mt-4 flex w-full items-center justify-center gap-2 bg-primary py-3 text-sm font-semibold uppercase text-primary-foreground"
+        className="mt-4 flex w-full items-center justify-center gap-2 rounded-md bg-primary py-3 text-sm font-semibold uppercase text-primary-foreground"
       >
         <Plus size={18} aria-hidden="true" /> Nouvelle séance
       </Link>}
