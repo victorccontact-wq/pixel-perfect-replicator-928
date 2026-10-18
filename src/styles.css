@@ -119,6 +119,7 @@
 
 @utility panel {
   border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
   background-color: var(--color-card);
 }
 
@@ -126,6 +127,7 @@
   width: 100%;
   background-color: var(--color-secondary);
   border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
   padding: 0.75rem;
   color: var(--color-foreground);
   outline: none;
