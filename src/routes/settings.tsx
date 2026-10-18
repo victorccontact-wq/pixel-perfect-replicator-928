@@ -39,7 +39,7 @@ function SettingsPage() {
         </h1>
       </header>
 
-      <section className="mt-8 divide-y divide-border border-y border-border">
+      <section className="panel mt-8 divide-y divide-border px-5">
         <div className="flex items-center justify-between gap-4 py-5">
           <div>
             <p className="myo-section-title">Sons</p>

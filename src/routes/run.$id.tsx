@@ -213,7 +213,7 @@ function Run() {
           {exercise?.name}
         </h1>
         <p className="mt-3 text-sm text-muted-foreground">REPOS {exercise?.rest}s</p>
-        <div className="mt-4 flex items-stretch border border-border">
+        <div className="mt-4 flex items-stretch overflow-hidden rounded-xl border border-border">
           <Button variant="ghost"
             onClick={() => changeLoad(-2.5)}
             aria-label="Diminuer la charge"
@@ -235,7 +235,7 @@ function Run() {
         </div>
       </div>
 
-      <div className="mt-10 flex min-h-60 flex-1 flex-col items-center justify-center border-y border-border py-8">
+      <div className="mt-10 flex min-h-60 flex-1 flex-col items-center justify-center rounded-xl border border-border py-8">
         {phase === "work" && (
           <>
             <p className="label-tech">[ SÉRIE_EN_COURS ]</p>
@@ -260,9 +260,9 @@ function Run() {
           <>
             <p className="label-tech">[ REPOS ]</p>
             <p className="mt-4 font-mono text-7xl font-bold">{fmt(rest)}</p>
-            <div className="mt-6 h-px w-2/3 bg-border">
+            <div className="mt-6 h-1.5 w-2/3 overflow-hidden rounded-full bg-border">
               <div
-                className="h-px bg-foreground transition-all duration-1000"
+                className="h-full rounded-full bg-foreground transition-all duration-1000"
                 style={{
                   width: `${100 - (rest / Math.max(exercise?.rest ?? 1, 1)) * 100}%`,
                 }}

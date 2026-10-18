@@ -69,7 +69,7 @@ function HomePage() {
             <Link
               to="/run/$id"
               params={{ id: w.id }}
-              className="mt-5 flex items-center justify-center gap-2 bg-primary py-3 text-sm font-semibold uppercase text-primary-foreground"
+              className="mt-5 flex items-center justify-center gap-2 rounded-md bg-primary py-3 text-sm font-semibold uppercase text-primary-foreground"
             >
               Lancer <ArrowRight size={16} aria-hidden="true" />
             </Link>
