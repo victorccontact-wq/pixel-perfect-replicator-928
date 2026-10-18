@@ -86,7 +86,7 @@ function ConfigurePage() {
               <Link
                 to="/workout/$id"
                 params={{ id: w.id }}
-                className="bg-primary py-3 text-center text-sm font-semibold uppercase text-primary-foreground"
+                className="rounded-md bg-primary py-3 text-center text-sm font-semibold uppercase text-primary-foreground"
               >
                 Éditer
               </Link>

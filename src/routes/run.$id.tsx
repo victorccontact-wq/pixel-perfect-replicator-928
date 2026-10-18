@@ -213,7 +213,7 @@ function Run() {
           {exercise?.name}
         </h1>
         <p className="mt-3 text-sm text-muted-foreground">REPOS {exercise?.rest}s</p>
-        <div className="mt-4 flex items-stretch border border-border">
+        <div className="mt-4 flex items-stretch overflow-hidden rounded-xl border border-border">
           <Button variant="ghost"
             onClick={() => changeLoad(-2.5)}
             aria-label="Diminuer la charge"
