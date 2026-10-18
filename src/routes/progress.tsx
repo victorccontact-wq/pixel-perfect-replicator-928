@@ -76,7 +76,7 @@ function ProgressPage() {
         </section>
       ) : (
         <>
-          <section aria-label="Résumé" className="grid grid-cols-3 border-b border-border py-6">
+          <section aria-label="Résumé" className="panel grid grid-cols-3 py-5">
             <Stat label="SÉANCES" value={number.format(sessions.length)} />
             <Stat label="SÉRIES" value={number.format(totalSets)} />
             <Stat label="VOLUME" value={`${number.format(volume)} kg`} />
@@ -91,7 +91,7 @@ function ProgressPage() {
               </select>
             </label>
             {active && (
-              <div className="mt-5 border border-border p-4 sm:p-6">
+              <div className="panel mt-5 p-4 sm:p-6">
                 <div className="flex items-end justify-between gap-3 border-b border-border pb-4">
                    <div><p className="label-tech">[ DERNIÈRE CHARGE ]</p><p className="mt-1 font-mono text-2xl font-bold">{number.format(active.points.at(-1)?.load ?? 0)} <span className="text-sm text-muted-foreground">KG</span></p></div>
                   <p className="text-xs text-muted-foreground">{active.points.length} SÉRIE{active.points.length > 1 ? "S" : ""}</p>
